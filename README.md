@@ -2,6 +2,8 @@
 Searches Spotify for Songs/ Albums/ Artists in Discord!
 ...and more to come!
 
+on 100+ Servers
+
 ## More
 https://gorgonzola.social/querify
 
