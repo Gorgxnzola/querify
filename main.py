@@ -7,11 +7,12 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 load_dotenv()
 
-bot = commands.Bot(command_prefix="-", test_guilds=[906881394859470879])
+bot = commands.Bot(command_prefix="-")
 bot.remove_command('help')
 case_insensitive = True
-client_secret = os.getenv("CLIENT_SECRET")
-client_id = os.getenv("CLIENT_ID")
+sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(
+        client_id=os.getenv("CLIENT_ID"),
+        client_secret=os.getenv("CLIENT_SECRET")))
 
 @bot.event
 async def on_ready():
@@ -39,9 +40,6 @@ async def track(inter, name: str):
     ----------
     name: What track do you want to lookup?
     """
-    sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(
-        client_id=client_id,
-        client_secret=client_secret))
     results = sp.search(q=name.lower(), type="track", limit=20, offset=0)
     try:
       await inter.response.send_message(results['tracks']['items'][0]['external_urls']['spotify'])
@@ -57,9 +55,6 @@ async def album(inter, name: str):
       ----------
       name: What album do you want to lookup?
     """
-    sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(
-        client_id=client_id,
-        client_secret=client_secret))
     results = sp.search(q=name.lower(), type="album", limit=20, offset=0)
     try:
       album_id = results['albums']['items'][0]['id']
@@ -90,9 +85,6 @@ async def artist(inter, name: str):
     ----------
     name: What artist do you want to lookup?
   """
-  sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(
-      client_id=client_id,
-      client_secret=client_secret))
   artist = sp.search(q=name.lower(), type="artist", limit=20, offset=0)
   try:
     artist_id = artist['artists']['items'][0]['id']
