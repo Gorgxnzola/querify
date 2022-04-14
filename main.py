@@ -16,21 +16,24 @@ sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(activity=disnake.Game('-help'))
+    await bot.change_presence(activity=disnake.Activity(type=disnake.ActivityType.listening, name="/help"))
     print(f"{bot.user} is online")
 
-@bot.command()
-async def help(ctx):
+@bot.slash_command()
+async def help(inter):
+    """
+    Commands and Additional Information about this bot
+    """
     embed = disnake.Embed(title="Querify",
-                          description="Use this bot to search Spotify and more!",
+                          description="Use this bot to search Spotify and more!\n(This Bot uses the Spotify API)",
                           color=0x8792c6)
     embed.add_field(
-        name="We have just moved to Slash Commands!",
+        name="Now using Slash Commands!",
         value=
         "`/track <name>` - search a track\n`/album <name>` - search a album\n`/artist <name>` - search a artist\n[[Invite]](https://discord.com/api/oauth2/authorize?client_id=936725976753254511&permissions=0&scope=bot%20applications.commands)",
         inline=True)
     embed.set_footer(text="Querify | bot by gorgonzola#6770")
-    await ctx.send(embed=embed)
+    await inter.response.send_message(embed=embed)
 
 @bot.slash_command()
 async def track(inter, name: str):
